@@ -1,0 +1,38 @@
+body {
+  margin: 0;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+code {
+  font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
+    monospace;
+}
+@font-face {
+  font-family: 'Hi Melody', cursive;
+  font-weight: 300;
+  src: url('./static/fonts/font-HiMelody.ttf') format('woff2'),
+  url('./static/fonts/font-HiMelody.ttf') format('woff'),
+  url('./static/fonts/font-HiMelody.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Nanum Gothic', sans-serif;
+  font-weight: 300;
+  src: url('./static/fonts/NanumGothic-Bold.ttf') format('woff2'),
+  url('./static/fonts/NanumGothic-Bold.ttf') format('woff'),
+  url('./static/fonts/NanumGothic-Bold.ttf') format('truetype'),
+  url('./static/fonts/NanumGothic-ExtraBold.ttf') format('woff2'),
+  url('./static/fonts/NanumGothic-ExtraBold.ttf') format('woff'),
+  url('./static/fonts/NanumGothic-ExtraBold.ttf') format('truetype'),
+  url('./static/fonts/NanumGothic-Regular.ttf') format('woff2'),
+  url('./static/fonts/NanumGothic-Regular.ttf') format('woff'),
+  url('./static/fonts/NanumGothic-Regular.ttf') format('truetype'),
+  
+  ;
+
+
+}
