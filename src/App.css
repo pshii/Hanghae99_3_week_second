@@ -8,6 +8,13 @@
   height: 40vmin;
   pointer-events: none;
 }
+.white { 
+  background-color: #fff;
+}
+.blue {
+  background-color: #6799FF;
+  color: #fff;
+}
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

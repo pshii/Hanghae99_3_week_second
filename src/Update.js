@@ -1,14 +1,16 @@
 import styledComponents from "styled-components";
 import Button from '@mui/material/Button';
-import Alert from '@mui/material/Alert';
-import Stack from '@mui/material/Stack';
 import { useHistory } from "react-router-dom"
 import React, { useRef, useState } from "react";
 import { useDispatch } from 'react-redux';
-import { createWord } from "./redux/modules/word";
-const Add = (props) => {
+import {useSelector} from "react-redux";
+import { useParams } from "react-router-dom";
+import { UpdateWord } from "./redux/modules/word";
+const Update = (props) =>{
+    const word_list = useSelector((state) => state.word.list);
     const dispatch = useDispatch();
     const history = useHistory();
+    const {index} = useParams();
     const word = useRef(null);
     const pinyin = useRef(null);
     const meaning = useRef(null);
@@ -19,59 +21,56 @@ const Add = (props) => {
     const [m, setM] = useState();
     const [e, setE] = useState();
     const [i, setI] = useState();
-
-    const addWord = (a, b, c, d, e) => {
+    const updateWord = (a,b,c,d,e) => {
         setW(a);
         setP(b);
         setM(c);
         setE(d);
         setI(e);
     }
-
     React.useEffect(() => {                         // 순수 자바스크립트 문법 가능??
         if (w && p && m && e && i){                 // 첫 렌더링시에 실행 방지
-            dispatch(createWord(w, p, m, e, i));
+            dispatch(UpdateWord(w, p, m, e, i,index));
             history.goBack();
         }
-    }, [w, p, m, e, i])                             // 안에 담긴 변수가 바뀔 떄 실행
-                                                 // 몇 개가 바뀌든 한 번만 실행
+    }, [w, p, m, e, i]) 
+    
     return (
         <div>
-            <Stack sx={{ width: '30vw', margin: "auto" }} spacing={2}>
-                <Alert severity="error">모든 칸을 다 입력해야합니다!</Alert>
-            </Stack>
-            <AddBox className='add-box'>
-                <h3>단어 추가하기</h3>
+            <AddBox className='add-box' >
+                <h3>단어 수정하기</h3>
                 <InputBox>
                     <p>단어</p>
-                    <Input ref={word}></Input>
+                    <Input ref={word} defaultValue={word_list[index].word} ></Input>
                 </InputBox>
                 <InputBox>
                     <p>병음</p>
-                    <Input ref={pinyin}></Input>
+                    <Input ref={pinyin} defaultValue={word_list[index].pinyin}></Input>
                 </InputBox>
                 <InputBox>
                     <p>의미</p>
-                    <Input ref={meaning}></Input>
+                    <Input ref={meaning}  defaultValue={word_list[index].meaning}></Input>
                 </InputBox>
                 <InputBox>
                     <p>예문</p>
-                    <Input ref={example}></Input>
+                    <Input ref={example} defaultValue={word_list[index].example}></Input>
                 </InputBox>
                 <InputBox>
                     <p>해석</p>
-                    <Input ref={interpretation}></Input>
+                    <Input ref={interpretation} defaultValue={word_list[index].interpretation}></Input>
                 </InputBox>
+
                 <Button variant="contained" style={{ marginTop: "20px" }} onClick={() => {
                     word.current.value&&pinyin.current.value&&meaning.current.value
                     &&example.current.value&&interpretation.current.value !== null ?
-                     addWord(word.current.value, pinyin.current.value, meaning.current.value, example.current.value, interpretation.current.value,) 
+                     updateWord(word.current.value, pinyin.current.value, meaning.current.value, example.current.value, interpretation.current.value) 
                     : alert('아직 입력하지 않은 항목이 있습니다.');
                     // history.goBack();/
                 }} >저장하기</Button>
             </AddBox>
 
         </div>
+
     );
 }
 const AddBox = styledComponents.div`
@@ -100,5 +99,4 @@ const Input = styledComponents.input`
 `;
 
 
-
-export default Add;
+export default Update;

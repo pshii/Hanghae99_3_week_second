@@ -2,6 +2,7 @@ import './App.css';
 import styledComponents from 'styled-components';
 import List from './List';
 import Add from './Add';
+import Update from './Update';
 import {Route} from 'react-router-dom';
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
       <Route path="/add">
         <Add/>
       </Route>
+      <Route path="/update/:index" component={Update} />
       
     </div>
   );
