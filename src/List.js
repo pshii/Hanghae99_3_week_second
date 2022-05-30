@@ -5,24 +5,31 @@ import AddIcon from '@mui/icons-material/Add';
 import { useHistory } from "react-router-dom"
 import { useSelector } from 'react-redux';
 import Icon from '@mdi/react'
-import { mdiAccount } from '@mdi/js'
 import { mdiCheckOutline } from '@mdi/js';
 import { mdiBorderColor } from '@mdi/js';
 import { mdiClose } from '@mdi/js';
 import { useDispatch } from "react-redux";
-import { UpdateChecked } from "./redux/modules/word";
-
+import { deleteWordFB, UpdateCheckedFB } from "./redux/modules/word";
+import { loadWordFB } from "./redux/modules/word";
 const List = (props) => {
     const history = useHistory();
     const data = useSelector((state) => state);
     const word_list = data.word.list;
     const dispatch = useDispatch();
-    
-    
+    // const [temp, setTemp] = useState(false);
+    React.useEffect(() => {
+              
+        dispatch(loadWordFB());   
+      }, []);
 
+    
+    const bgColorChange = (e) => {
+        // const target = e.target.parentElement.parentElement.parentElement;
+        // target.style.backgroundColor = temp ? "#6799FF" : "white";
+        // setTemp(temp ? false : true);
+    }
     return (
         <div>
-
             <ListBox className='list-box' >
                 {word_list.map((w, i) => {
                     return (
@@ -32,8 +39,10 @@ const List = (props) => {
                                 <div style={{ display: "flex", position:"absolute", top:"0%", right:"2%"  }}>
                                     <Icon path={mdiCheckOutline} size={1} horizontal vertical rotate={180} 
                                     color = {w.checked ? "white" : "#6799FF"}
-                                    onClick={()=>{
-                                        dispatch(UpdateChecked(i));
+                                    onClick={(e)=>{
+                                        // console.log(e.target)
+                                        // bgColorChange(e)
+                                        dispatch(UpdateCheckedFB(w));
                                     }}
                                     />
                                     <Icon path={mdiBorderColor}  size={1} horizontal vertical rotate={180}
@@ -43,6 +52,9 @@ const List = (props) => {
                                     }}
                                     />
                                     <Icon path={mdiClose} size={1.2} horizontal vertical rotate={180} color = {w.checked ? "white" : "#6799FF"}
+                                    onClick={()=>{
+                                        dispatch(deleteWordFB(w.id));
+                                    }}
                                     />
                                 </div>
                             </Title>
@@ -52,7 +64,6 @@ const List = (props) => {
                             <Span style={{ color: w.checked ? "white" : "blue" }}>{w.interpretation}</Span>
                         </Card>
                     );
-
                 })}
 
                 <BtnAdd>
@@ -70,15 +81,12 @@ const List = (props) => {
 
 const ListBox = styledComponents.div`
     width: 80vw;
-    border:1px solid black;
-    height : 80vh;
     margin : auto;
     font-family: 'Nanum Gothic', sans-serif;
     display:flex;
-    flex-wrap:wrap;
-    div:nth-child(n+4){
-        margin-top:-100px;
-    }
+    flex-wrap : wrap;
+    border:1px solid black;
+    
 `;
 const Card = styledComponents.div`
     border: 3px solid #6799FF;
