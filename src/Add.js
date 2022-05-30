@@ -3,39 +3,56 @@ import Button from '@mui/material/Button';
 import Alert from '@mui/material/Alert';
 import Stack from '@mui/material/Stack';
 import { useHistory } from "react-router-dom"
-import React, { useRef, useState } from "react";
+import React, {useRef} from "react";
 import { useDispatch } from 'react-redux';
-import { createWord } from "./redux/modules/word";
-import { create } from "@mui/material/styles/createTransitions";
+import { createWord, createWordFB } from "./redux/modules/word";
 const Add = (props) => {
     const dispatch = useDispatch();
     const history = useHistory();
-    const word = useRef(null);
-    const pinyin = useRef(null);
-    const meaning = useRef(null);
-    const example = useRef(null);
-    const interpretation = useRef(null);
-    const [w, setW] = useState();
-    const [p, setP] = useState();
-    const [m, setM] = useState();
-    const [e, setE] = useState();
-    const [i, setI] = useState();
+    const wordRef = useRef("")
+    const pinyinRef = useRef("")
+    const meaningRef = useRef("")
+    const exampleRef = useRef("")
+    const interpretationRef = useRef("");
 
-    const addWord = (a, b, c, d, e) => {
-        setW(a);
-        setP(b);
-        setM(c);
-        setE(d);
-        setI(e);
-    }
-
-    React.useEffect(() => {                         // 순수 자바스크립트 문법 가능??
-        if (w && p && m && e && i){
-            dispatch(createWord(w, p, e, m, i));
-            history.goBack();
+    // configStore에 createBrowserHistory 안함 
+    const addWord = () => {
+        const word= wordRef.current.value;
+        const pinyin= pinyinRef.current.value;
+        const meaning= meaningRef.current.value;
+        const example= exampleRef.current.value;
+        const interpretation= interpretationRef.current.value;
+        
+        
+        if (!(word && pinyin && meaning && example && interpretation)){
+            alert('아직 입력하지 않은 항목이 있습니다.');
+            return;    
         }
-    }, [w, p, m, e, i])                             // 안에 담긴 변수가 바뀔 떄 실행
-                                                 // 몇 개가 바뀌든 한 번만 실행
+        const realWord = {
+            word, pinyin, meaning, example, interpretation
+        }
+        dispatch(createWordFB(realWord));
+        history.push("/");
+
+
+        // dispatch(createWordFB({
+        //     word: _word,
+        //     pinyin: _pinyin,
+        //     meaning: _meaning,
+        //     example: _example,
+        //     interpretation: _interpretation,
+        // }))
+        // history.goBack();
+    }
+    
+
+    // React.useEffect(() => {                         // 순수 자바스크립트 문법 가능??
+    //     if (w && p && m && e && i){                 // 첫 렌더링시에 실행 방지
+    //         // dispatch(createWord(w, p, m, e, i));
+    //         dispatch(createWordFB(w,p,m,e,i))
+    //     }
+    // }, [word])                             // 안에 담긴 변수가 바뀔 떄 실행
+    // 몇 개가 바뀌든 한 번만 실행
     return (
         <div>
             <Stack sx={{ width: '30vw', margin: "auto" }} spacing={2}>
@@ -45,29 +62,26 @@ const Add = (props) => {
                 <h3>단어 추가하기</h3>
                 <InputBox>
                     <p>단어</p>
-                    <Input ref={word}></Input>
+                    <Input ref={wordRef}></Input>
                 </InputBox>
                 <InputBox>
                     <p>병음</p>
-                    <Input ref={pinyin}></Input>
+                    <Input ref={pinyinRef}></Input>
                 </InputBox>
                 <InputBox>
                     <p>의미</p>
-                    <Input ref={meaning}></Input>
+                    <Input ref={meaningRef}></Input>
                 </InputBox>
                 <InputBox>
                     <p>예문</p>
-                    <Input ref={example}></Input>
+                    <Input ref={exampleRef}></Input>
                 </InputBox>
                 <InputBox>
                     <p>해석</p>
-                    <Input ref={interpretation}></Input>
+                    <Input ref={interpretationRef}></Input>
                 </InputBox>
                 <Button variant="contained" style={{ marginTop: "20px" }} onClick={() => {
-                    word.current.value&&pinyin.current.value&&meaning.current.value
-                    &&example.current.value&&interpretation.current.value !== null ?
-                     addWord(word.current.value, pinyin.current.value, meaning.current.value, example.current.value, interpretation.current.value,) 
-                    : alert('아직 입력하지 않은 항목이 있습니다.');
+                        addWord();                        
                     // history.goBack();/
                 }} >저장하기</Button>
             </AddBox>
