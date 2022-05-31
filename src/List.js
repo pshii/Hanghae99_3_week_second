@@ -15,7 +15,6 @@ import Spinner from "./Spinner";
 
 const List = (props) => {
     const is_loaded = useSelector(state => state.word.is_loaded)
-console.log(is_loaded)
     const history = useHistory();
     const data = useSelector((state) => state);
     const word_list = data.word.list;
@@ -79,7 +78,7 @@ console.log(is_loaded)
                 </BtnAdd>
                 
             </ListBox>
-            {!is_loaded && <Spinner/>}
+            {!is_loaded ? <Spinner/> : null}
 
         </div>
     );

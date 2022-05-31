@@ -157,7 +157,7 @@ export default function reducer(state = initialState, action = {}) { //기존거
             console.log({ list: [...state.list] })       // !!return 하기도 전에 이미 추가가 되어있다?
             // console.log({ list: [state.list, action.word] })
             console.log({ list: [...state.list, action.word] })
-            return { list: [...state.list] }; // 새로운 배열 리턴
+            return { list: [...state.list], is_loaded:true }; // 새로운 배열 리턴
         }
         case "word/UPDATEWORD": {
             // const new_word_list = state.list.map((w, i) => {   //인덱스로 접근 값 하나만 바뀔때
@@ -182,7 +182,7 @@ export default function reducer(state = initialState, action = {}) { //기존거
                 return { ...w }
             })
             // console.log({ list: new_word_list })
-            return { list: new_word_list }; // 새로운 배열 리턴
+            return { list: new_word_list, is_loaded: true }; // 새로운 배열 리턴
         }
 
         case "word/UPDATECHECK": {
@@ -206,7 +206,7 @@ export default function reducer(state = initialState, action = {}) { //기존거
 
 
 
-            return { list: new_word_list };
+            return { list: new_word_list , is_loaded:true};
         }
 
         case "word/DELETE": {
@@ -214,7 +214,7 @@ export default function reducer(state = initialState, action = {}) { //기존거
                 return parseInt(action.idx) !== i
             });
             // console.log({ list: new_word_list })
-            return { list: new_word_list };
+            return { list: new_word_list, is_loaded:true };
         }
         default: return state;
     }
