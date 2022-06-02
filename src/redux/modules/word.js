@@ -18,6 +18,7 @@ const UPDATECHECK = "word/UPDATECHECK";
 // 미들웨어 Actions
 const LOAD = "word/LOAD"
 const initialState = {
+    is_loaded : false,
     list: [
         // { word: "十分", pinyin: "shífēn", meaning: "십분, 매우, 대단히, 충분히", example: "天气十分热", interpretation: "날씨가 대단히 덥다", checked: false },
         // { word: "必要", pinyin: "bìyào", meaning: "필요, 필요로 하는", example: "没有必要再讨论了", interpretation: "다시 토론할 필요가 없다", checked: false },
@@ -62,6 +63,7 @@ export const loadWordFB = () => {
             word_list.push({ id: w.id, ...w.data() }); //원하는 data만 가져옴
         });
         // 잘 만들어졌는 지 리스트도 확인해봐요! :)
+
         dispatch(loadWord(word_list));
     }
 }
@@ -143,7 +145,7 @@ export const deleteWordFB = (id) => {
 export default function reducer(state = initialState, action = {}) { //기존거 없애고,새로운거 추가하는 개념
     switch (action.type) {
         case "word/LOAD": {
-            return { list: action.word_list }
+            return { list: action.word_list, is_loaded : true }
         }
         case "word/CREATE": {
             // const dicWord = action.word
@@ -154,8 +156,8 @@ export default function reducer(state = initialState, action = {}) { //기존거
             // console.log(action.word)
             console.log({ list: [...state.list] })       // !!return 하기도 전에 이미 추가가 되어있다?
             // console.log({ list: [state.list, action.word] })
-            // console.log({ list: [...state.list, action.word] })
-            return { list: [...state.list] }; // 새로운 배열 리턴
+            console.log({ list: [...state.list, action.word] })
+            return { list: [...state.list], is_loaded:true }; // 새로운 배열 리턴
         }
         case "word/UPDATEWORD": {
             // const new_word_list = state.list.map((w, i) => {   //인덱스로 접근 값 하나만 바뀔때
@@ -180,7 +182,7 @@ export default function reducer(state = initialState, action = {}) { //기존거
                 return { ...w }
             })
             // console.log({ list: new_word_list })
-            return { list: new_word_list }; // 새로운 배열 리턴
+            return { list: new_word_list, is_loaded: true }; // 새로운 배열 리턴
         }
 
         case "word/UPDATECHECK": {
@@ -204,7 +206,7 @@ export default function reducer(state = initialState, action = {}) { //기존거
 
 
 
-            return { list: new_word_list };
+            return { list: new_word_list , is_loaded:true};
         }
 
         case "word/DELETE": {
@@ -212,7 +214,7 @@ export default function reducer(state = initialState, action = {}) { //기존거
                 return parseInt(action.idx) !== i
             });
             // console.log({ list: new_word_list })
-            return { list: new_word_list };
+            return { list: new_word_list, is_loaded:true };
         }
         default: return state;
     }

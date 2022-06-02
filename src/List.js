@@ -11,7 +11,10 @@ import { mdiClose } from '@mdi/js';
 import { useDispatch } from "react-redux";
 import { deleteWordFB, UpdateCheckedFB } from "./redux/modules/word";
 import { loadWordFB } from "./redux/modules/word";
+import Spinner from "./Spinner";
+
 const List = (props) => {
+    const is_loaded = useSelector(state => state.word.is_loaded)
     const history = useHistory();
     const data = useSelector((state) => state);
     const word_list = data.word.list;
@@ -73,7 +76,9 @@ const List = (props) => {
                         <AddIcon />
                     </Fab>
                 </BtnAdd>
+                
             </ListBox>
+            {!is_loaded ? <Spinner/> : null}
 
         </div>
     );
